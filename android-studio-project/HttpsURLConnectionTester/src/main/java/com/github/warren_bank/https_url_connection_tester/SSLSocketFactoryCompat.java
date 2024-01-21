@@ -21,6 +21,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,6 +53,8 @@ public class SSLSocketFactoryCompat extends SSLSocketFactory {
                 for (String protocol : socket.getSupportedProtocols())
                     if (!protocol.toUpperCase(Locale.US).contains("SSL"))
                         protocols.add(protocol);
+                Collections.sort(protocols);
+                Collections.reverse(protocols);
                 Log.i(TAG, "Setting allowed TLS protocols: " + TextUtils.join(", ", protocols));
                 SSLSocketFactoryCompat.protocols = protocols.toArray(new String[protocols.size()]);
 
@@ -59,23 +62,42 @@ public class SSLSocketFactoryCompat extends SSLSocketFactory {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     // choose known secure cipher suites
                     List<String> allowedCiphers = Arrays.asList(
-                            // TLS 1.2
-                            "TLS_RSA_WITH_AES_256_GCM_SHA384",
-                            "TLS_RSA_WITH_AES_128_GCM_SHA256",
-                            "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256",
+                            // strong
                             "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
                             "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
-                            "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
                             "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-                            // maximum interoperability
-                            "TLS_RSA_WITH_3DES_EDE_CBC_SHA",
-                            "TLS_RSA_WITH_AES_128_CBC_SHA",
-                            // additionally
+                            "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+                            "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+                            "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
+                            "TLS_DHE_DSS_WITH_AES_256_GCM_SHA384",
+                            "TLS_DHE_DSS_WITH_AES_128_GCM_SHA256",
+
+                            // weak
+                            "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+                            "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+                            "TLS_DHE_RSA_WITH_AES_256_CBC_SHA256",
+                            "TLS_DHE_DSS_WITH_AES_256_CBC_SHA256",
+                            "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
+                            "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                            "TLS_RSA_WITH_AES_256_GCM_SHA384",
+                            "TLS_RSA_WITH_AES_256_CBC_SHA256",
                             "TLS_RSA_WITH_AES_256_CBC_SHA",
-                            "TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA",
-                            "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
                             "TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
-                            "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA");
+                            "TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA",
+                            "TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+                            "TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+                            "TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+                            "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+                            "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256",
+                            "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+                            "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+                            "TLS_DHE_RSA_WITH_AES_128_CBC_SHA256",
+                            "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256",
+                            "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+                            "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+                            "TLS_RSA_WITH_AES_128_GCM_SHA256",
+                            "TLS_RSA_WITH_AES_128_CBC_SHA256",
+                            "TLS_RSA_WITH_AES_128_CBC_SHA");
                     List<String> availableCiphers = Arrays.asList(socket.getSupportedCipherSuites());
                     Log.i(TAG, "Available cipher suites: " + TextUtils.join(", ", availableCiphers));
                     Log.i(TAG, "Cipher suites enabled by default: " + TextUtils.join(", ", socket.getEnabledCipherSuites()));
