@@ -1,7 +1,6 @@
 package com.github.warren_bank.https_url_connection_tester;
 
 import android.app.Application;
-import android.os.Build;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -10,16 +9,11 @@ public class App extends Application {
   public void onCreate() {
     super.onCreate();
 
-    if (
-      (Build.VERSION.SDK_INT >= 16) &&
-      (Build.VERSION.SDK_INT <  20)
-    ) {
-      try {
-        TLSSocketFactory socketFactory = new TLSSocketFactory();
+    try {
+      SSLSocketFactoryCompat socketFactory = new SSLSocketFactoryCompat();
 
-        HttpsURLConnection.setDefaultSSLSocketFactory(socketFactory);
-      }
-      catch(Exception e) {}
+      HttpsURLConnection.setDefaultSSLSocketFactory(socketFactory);
     }
+    catch(Exception e) {}
   }
 }
