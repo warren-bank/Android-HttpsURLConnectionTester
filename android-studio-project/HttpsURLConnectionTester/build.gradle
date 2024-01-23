@@ -11,24 +11,25 @@ android {
   }
 
   defaultConfig {
-    minSdkVersion project.ext.minSdkVersion
+    applicationId "com.github.warren_bank.https_url_connection_tester"
     targetSdkVersion project.ext.targetSdkVersion
 
-    applicationId "com.github.warren_bank.https_url_connection_tester"
+    minSdkVersion project.ext.minSdkVersion
     versionName project.ext.releaseVersion
     versionCode project.ext.releaseVersionCode
 
-    archivesBaseName += "-$versionName"
+    archivesBaseName += "-{{versionName}}"
   }
 
   buildTypes {
     release {
       debuggable      false
       jniDebuggable   false
-      shrinkResources true
-      minifyEnabled   true
+      shrinkResources false //true
+      minifyEnabled   false //true
       proguardFiles = [
         "proguard-rules.txt",
+        "proguard-conscrypt.txt",
         getDefaultProguardFile('proguard-android.txt')
       ]
     }
@@ -44,4 +45,48 @@ android {
     disable 'MissingTranslation'
     abortOnError true
   }
+
+  flavorDimensions "securityProvider"
+
+  productFlavors {
+    withSharedExternalConscryptOrDefaultSecurityProvider {
+      dimension "securityProvider"
+    }
+    withInternalConscryptSecurityProvider {
+      dimension "securityProvider"
+
+      minSdkVersion project.ext.conscryptMinSdkVersion
+      versionName project.ext.conscryptReleaseVersion
+      versionCode project.ext.conscryptReleaseVersionCode
+    }
+  }
+
+  splits {
+    abi {
+      enable gradle.startParameter.taskNames.any { it.toLowerCase().contains("withinternalconscryptsecurityprovider") }
+      reset()
+      include "arm64-v8a", "armeabi-v7a", "x86", "x86_64"
+      universalApk false
+    }
+  }
+
+  applicationVariants.all { variant ->
+    variant.outputs.all { output ->
+      //def appId = variant.applicationId
+      //def versionName = variant.versionName
+      //def versionCode = variant.versionCode
+      //def flavorName = variant.flavorName
+      //def buildType = variant.buildType.name
+      //def variantName = variant.name
+
+      outputFileName = outputFileName.replace("{{versionName}}", variant.versionName)
+    }
+  }
+}
+
+dependencies {
+  withInternalConscryptSecurityProviderImplementation 'org.conscrypt:conscrypt-android:' + project.ext.conscryptVersion  // https://mvnrepository.com/artifact/org.conscrypt/conscrypt-android/2.5.2
+
+  //withInternalConscryptSecurityProviderCompileOnly 'org.conscrypt:conscrypt-android:' + project.ext.conscryptVersion  // https://mvnrepository.com/artifact/org.conscrypt/conscrypt-android/2.5.2
+  //withInternalConscryptSecurityProviderRuntimeOnly 'org.conscrypt:conscrypt-android:' + project.ext.conscryptVersion  // https://mvnrepository.com/artifact/org.conscrypt/conscrypt-android/2.5.2
 }

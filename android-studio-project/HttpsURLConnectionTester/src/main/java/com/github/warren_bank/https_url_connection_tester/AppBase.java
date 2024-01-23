@@ -4,16 +4,15 @@ import android.app.Application;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class App extends Application {
-  @Override
-  public void onCreate() {
-    super.onCreate();
+public class AppBase extends Application {
 
+  protected void upgradeSSLSocketFactory(boolean upgradeProtocols, boolean upgradeCipherSuites) {
     try {
-      SSLSocketFactoryCompat socketFactory = new SSLSocketFactoryCompat();
+      SSLSocketFactoryCompat socketFactory = new SSLSocketFactoryCompat(upgradeProtocols, upgradeCipherSuites);
 
       HttpsURLConnection.setDefaultSSLSocketFactory(socketFactory);
     }
     catch(Exception e) {}
   }
+
 }

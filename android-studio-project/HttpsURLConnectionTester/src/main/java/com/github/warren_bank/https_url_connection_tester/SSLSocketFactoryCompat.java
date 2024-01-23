@@ -1,16 +1,16 @@
 package com.github.warren_bank.https_url_connection_tester;
 
 /*
- * https://github.com/bitfireAT/davx5-ose/tree/v1.4.0.3
- * https://github.com/bitfireAT/davx5-ose/blob/v1.4.0.3/app/src/main/java/at/bitfire/davdroid/SSLSocketFactoryCompat.java
+ * based on:
+ *   https://github.com/bitfireAT/davx5-ose/blob/v1.4.0.3/app/src/main/java/at/bitfire/davdroid/SSLSocketFactoryCompat.java
  */
 
 /*
  * Copyright © 2013 – 2015 Ricki Hirner (bitfire web engineering).
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl.html
+ * which accompanies this distribution, and is available at:
+ *   http://www.gnu.org/licenses/gpl.html
  */
 
 import android.os.Build;
@@ -35,6 +35,9 @@ import javax.net.ssl.SSLSocketFactory;
 public class SSLSocketFactoryCompat extends SSLSocketFactory {
 
     private static final String TAG = SSLSocketFactoryCompat.class.getSimpleName();
+
+    private final boolean upgradeProtocols;
+    private final boolean upgradeCipherSuites;
 
     private SSLSocketFactory delegate;
 
@@ -124,7 +127,10 @@ public class SSLSocketFactoryCompat extends SSLSocketFactory {
         }
     }
 
-    public SSLSocketFactoryCompat() {
+    public SSLSocketFactoryCompat(boolean upgradeProtocols, boolean upgradeCipherSuites) {
+        this.upgradeProtocols    = upgradeProtocols;
+        this.upgradeCipherSuites = upgradeCipherSuites;
+
         try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, null, null);
@@ -135,22 +141,26 @@ public class SSLSocketFactoryCompat extends SSLSocketFactory {
     }
 
     private void upgradeTLS(SSLSocket ssl) {
-        if (protocols != null)
+        if (upgradeProtocols && (protocols != null))
             ssl.setEnabledProtocols(protocols);
 
-        if (cipherSuites != null)
+        if (upgradeCipherSuites && (cipherSuites != null))
             ssl.setEnabledCipherSuites(cipherSuites);
     }
 
 
     @Override
     public String[] getDefaultCipherSuites() {
-        return cipherSuites;
+        return (upgradeCipherSuites && (cipherSuites != null))
+            ? cipherSuites
+            : delegate.getDefaultCipherSuites();
     }
 
     @Override
     public String[] getSupportedCipherSuites() {
-        return cipherSuites;
+        return (upgradeCipherSuites && (cipherSuites != null))
+            ? cipherSuites
+            : delegate.getSupportedCipherSuites();
     }
 
     @Override

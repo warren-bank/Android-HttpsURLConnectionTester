@@ -1,0 +1,42 @@
+# ------------------------------------------------------------------------------
+# https://github.com/google/conscrypt/tree/2.5.2/common/src/main/java
+# https://github.com/google/conscrypt/tree/2.5.2/platform/src/main/java
+# https://github.com/google/conscrypt/tree/2.5.2/openjdk/src/main/java/
+# https://github.com/google/conscrypt/tree/2.5.2/android/src/main/java
+# ------------------------------------------------------------------------------
+
+-keep interface org.conscrypt.** { *; }
+-keep class     org.conscrypt.** { *; }
+-dontwarn       org.conscrypt.**
+
+# ------------------------------------------------------------------------------
+# https://github.com/google/conscrypt/tree/2.5.2/android-stub/src/main/java
+# ------------------------------------------------------------------------------
+
+-keep interface com.android.org.conscrypt.** { *; }
+-keep class     com.android.org.conscrypt.** { *; }
+-dontwarn       com.android.org.conscrypt.**
+
+-keep interface dalvik.system.** { *; }
+-keep class     dalvik.system.** { *; }
+-dontwarn       dalvik.system.**
+
+-keep interface javax.net.ssl.** { *; }
+-keep class     javax.net.ssl.** { *; }
+-dontwarn       javax.net.ssl.**
+
+-keep interface org.apache.harmony.xnet.provider.jsse.** { *; }
+-keep class     org.apache.harmony.xnet.provider.jsse.** { *; }
+-dontwarn       org.apache.harmony.xnet.provider.jsse.**
+
+# ------------------------------------------------------------------------------
+# https://github.com/google/conscrypt/tree/2.5.2/libcore-stub/src/main/java
+# ------------------------------------------------------------------------------
+
+-keep interface android.system.** { *; }
+-keep class     android.system.** { *; }
+-dontwarn       android.system.**
+
+-keep interface libcore.** { *; }
+-keep class     libcore.** { *; }
+-dontwarn       libcore.**
