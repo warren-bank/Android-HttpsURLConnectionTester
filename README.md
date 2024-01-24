@@ -27,7 +27,7 @@ Interesting problem:
 
 My own observations:
 
-* [releases](https://github.com/warren-bank/Android-HttpsURLConnectionTester/releases) v2.x work pretty well
+* [releases](https://github.com/warren-bank/Android-HttpsURLConnectionTester/releases) in v2.x work pretty well
   - the only problem that I've encountered.. and it's non-trivial.. is that hosts using a certificate signed by the most common _Let's Encrypt_ root certificate almost always require unsupported cipher suites
     * _SSL Labs_ reports that some are supported
     * `WebView` can successfully load the URL
@@ -46,7 +46,7 @@ My understanding of [_Conscrypt_](https://github.com/google/conscrypt/) is that 
 * isn't tiny
   - about 4 MB for all 4x ABIs
   - about 1 MB per ABI
-* can be either be:
+* can either be:
   - bundled with each individual app as an internal library
   - installed once in a [standalone app](https://f-droid.org/packages/com.mendhak.conscryptprovider/), and then shared with any other app that includes a [small amount of boilerplate code](https://github.com/mendhak/Conscrypt-Provider#instructions-for-developers)
 

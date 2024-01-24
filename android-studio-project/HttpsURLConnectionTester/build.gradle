@@ -25,8 +25,8 @@ android {
     release {
       debuggable      false
       jniDebuggable   false
-      shrinkResources false //true
-      minifyEnabled   false //true
+      shrinkResources true
+      minifyEnabled   true
       proguardFiles = [
         "proguard-rules.txt",
         "proguard-conscrypt.txt",
@@ -86,7 +86,4 @@ android {
 
 dependencies {
   withInternalConscryptSecurityProviderImplementation 'org.conscrypt:conscrypt-android:' + project.ext.conscryptVersion  // https://mvnrepository.com/artifact/org.conscrypt/conscrypt-android/2.5.2
-
-  //withInternalConscryptSecurityProviderCompileOnly 'org.conscrypt:conscrypt-android:' + project.ext.conscryptVersion  // https://mvnrepository.com/artifact/org.conscrypt/conscrypt-android/2.5.2
-  //withInternalConscryptSecurityProviderRuntimeOnly 'org.conscrypt:conscrypt-android:' + project.ext.conscryptVersion  // https://mvnrepository.com/artifact/org.conscrypt/conscrypt-android/2.5.2
 }
