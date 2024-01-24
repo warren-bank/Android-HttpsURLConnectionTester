@@ -1,6 +1,6 @@
 project.ext {
-  releaseVersionCode  = Integer.parseInt("03000001", 10)  //Integer.MAX_VALUE == 2147483647
-  releaseVersion      = '03.00.00-01API'
+  releaseVersionCode  = Integer.parseInt("03000101", 10)  //Integer.MAX_VALUE == 2147483647
+  releaseVersion      = '03.00.01-01API'
   javaVersion         = JavaVersion.VERSION_1_8
   minSdkVersion       = 1
   targetSdkVersion    = 33
@@ -18,7 +18,7 @@ project.ext {
   //   note: this is still the most recent release
 
   conscryptVersion             = '2.5.2'
-  conscryptReleaseVersionCode  = Integer.parseInt("03000009", 10)  //Integer.MAX_VALUE == 2147483647
-  conscryptReleaseVersion      = '03.00.00-09API'
+  conscryptReleaseVersionCode  = Integer.parseInt("03000109", 10)  //Integer.MAX_VALUE == 2147483647
+  conscryptReleaseVersion      = '03.00.01-09API'
   conscryptMinSdkVersion       = '9'
 }
